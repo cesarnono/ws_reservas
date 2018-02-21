@@ -6,6 +6,7 @@
 
 package org.solver.app.reservaVuelo.service;
 
+import java.util.Calendar;
 import java.util.List;
 import org.solver.app.reservaVuelo.Repository.TarifaVueloRepository;
 import org.solver.app.reservaVuelo.Repository.VueloRepository;
@@ -27,7 +28,9 @@ public class VueloService {
     TarifaVueloRepository tarifaVueloRepository;
     
     public List<Vuelo> consultarVuelos(Vuelo vuelo){
-        return vueloRepository.consultarVueloCriterio(vuelo.getTarifaVuelo().getCiudadOrigen(),vuelo.getTarifaVuelo().getCiudadDestino(),vuelo.getFecha());
+        List<Vuelo> vuelos = vueloRepository.consultarVueloCriterio(vuelo.getTarifaVuelo().getCiudadOrigen(),vuelo.getTarifaVuelo().getCiudadDestino(),vuelo.getFecha()); 
+        ajustarPreciosVuelo(vuelos);
+        return vuelos;
     }
     
     public List<Vuelo> consultarTodosVuelos(){
@@ -35,6 +38,26 @@ public class VueloService {
     }
     
     public List<TarifaVuelo> consultarTodosTarifas(){
-        return tarifaVueloRepository.findAll();
+        return tarifaVueloRepository.findAll(); 
+    }
+    
+    private void ajustarPreciosVuelo(List<Vuelo> vuelos){
+        if(vuelos != null){
+            for (Vuelo vuelo : vuelos){
+                if(esFechaFinDeSemana(vuelo.getFecha())){
+                    vuelo.setPrecio(vuelo.getTarifaVuelo().getPrecio() + (vuelo.getTarifaVuelo().getPrecio() *(vuelo.getTarifaVuelo().getPorcentajeRecargoFinSemana()/100)));
+                }else{
+                    if( vuelo.getHora() < 1200){
+                       vuelo.setPrecio(vuelo.getTarifaVuelo().getPrecio() + (vuelo.getTarifaVuelo().getPrecio() *(vuelo.getTarifaVuelo().getPorcentajeRecargoManana()/100)));
+                     }else{
+                        vuelo.setPrecio(vuelo.getTarifaVuelo().getPrecio() + (vuelo.getTarifaVuelo().getPrecio() *(vuelo.getTarifaVuelo().getPorcentajeRecargoTarde()/100)));
+                    }
+                }
+            }
+        }
+    }
+    
+    private boolean esFechaFinDeSemana(Calendar fechaVuelo){
+       return (fechaVuelo.get(Calendar.DAY_OF_WEEK)==Calendar.SATURDAY || fechaVuelo.get(Calendar.DAY_OF_WEEK)==Calendar.SUNDAY );
     }
 }

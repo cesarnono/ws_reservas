@@ -25,5 +25,15 @@ public class UserService {
     public List<Usuario> obtenerUsuarios(){
         return userRepository.findAll();
     }
+    
+    public Usuario registrarUsuario(Usuario usuario){
+        return userRepository.save(usuario);
+    }
+    
+    public Usuario consultarUsuario(String identificacion){
+        Usuario usuario = userRepository.findByIdentificacion(identificacion);
+        System.out.println("usuario consultado : "+usuario);
+        return usuario;
+    }
 
 }

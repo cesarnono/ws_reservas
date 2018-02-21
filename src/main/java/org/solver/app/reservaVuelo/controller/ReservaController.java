@@ -7,8 +7,8 @@
 package org.solver.app.reservaVuelo.controller;
 
 import java.util.List;
-import org.solver.app.reservaVuelo.entity.Usuario;
-import org.solver.app.reservaVuelo.service.UserService;
+import org.solver.app.reservaVuelo.entity.Reserva;
+import org.solver.app.reservaVuelo.service.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,29 +21,25 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author César Aguirre Vega
  */
+
 @RestController
-public class UserController {
+public class ReservaController {
     
     @Autowired
-    UserService userService;
-    
-    @GetMapping("/usuarios")
-    public List<Usuario> obtenerUsuarios(){
-        return userService.obtenerUsuarios();
-    }
+    ReservaService reservaService;
     
     @CrossOrigin
-    @PostMapping("/regusuario")    
-    public Usuario registrarUsuario(@RequestBody Usuario usuario){
-        return userService.registrarUsuario(usuario);
+    @PostMapping("/reserva")
+    public Reserva registrarReserva(@RequestBody Reserva reserva){
+        return reservaService.registrarReserva(reserva);
     }
+    
     
     @CrossOrigin
-    @GetMapping("/consultausuario")    
-    public Usuario consultarUsuario(@RequestParam("identificacion") String identificacion){
-        System.out.println("consultausuario.....["+identificacion +"]");
-        return userService.consultarUsuario(identificacion); 
+    @GetMapping("/consultareservas")
+    public List<Reserva> consultarReservasUsuario(@RequestParam ("identificacion") String identificacion){
+        System.out.println("identificacion--> "+identificacion);
+        return reservaService.consultarReservasUsuario(identificacion);
     }
-    
 
 }

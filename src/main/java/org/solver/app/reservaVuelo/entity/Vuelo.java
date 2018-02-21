@@ -23,6 +23,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 /**
  *
@@ -46,6 +47,9 @@ public class Vuelo implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "vuelo",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<Reserva> reservas;
+    
+    @Transient
+    private float precio;
 
     public long getId() {
         return id;
@@ -102,5 +106,15 @@ public class Vuelo implements Serializable {
     public void setTiempoDuracionMinutos(int tiempoDuracionMinutos) {
         this.tiempoDuracionMinutos = tiempoDuracionMinutos;
     } 
+
+    public float getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(float precio) {
+        this.precio = precio;
+    }
+    
+    
 
 }

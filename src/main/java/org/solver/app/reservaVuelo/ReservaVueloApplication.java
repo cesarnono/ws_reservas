@@ -55,7 +55,7 @@ public class ReservaVueloApplication {
                 vuelo.setNumeroAvion("AX125-u65");
                 vuelo.setTarifaVuelo(tarifaViVuelo);
                 vuelo.setFecha(Calendar.getInstance());
-                vuelo.setHora(1400);
+                vuelo.setHora(1100);
                 vuelo.setTiempoDuracionMinutos(50);
                 vueloRepository.save(vuelo);
                 
